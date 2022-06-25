@@ -1,0 +1,40 @@
+.tabela__alinhamento--direita {
+  text-align: right;
+}
+
+.tabela__coluna--p {
+  width: 20%;
+}
+
+.tabela__coluna--m {
+  width: 25%;
+}
+
+.tabela__coluna--g {
+  width: 50%;
+}
+
+.td {
+  padding: 1rem;
+}
+
+.botao-simples--adicionar {
+  color: #FF5883;
+  font-size: 25px;
+}
+
+.botao-simples--excluir {
+  color: #df2525;
+}
+
+.botao-simples--editar {
+  color: #0085FF;
+}
+
+.botao-simples--detalhes {
+  color: #047900;
+}
+
+.tabela__botoes-controle button:first-of-type {
+    margin-right: 2.25rem;
+}
