@@ -53,12 +53,12 @@ export default function Cabecalho() {
         <CabecalhoLista>
           <CabecalhoLink> <NavLink activeClassName="ativado" to='/home'>  Dashboard  </NavLink>  </CabecalhoLink>
           <CabecalhoLink> <NavLink activeClassName="ativado" to='/produtos'>  Produtos  </NavLink> </CabecalhoLink>
-          <CabecalhoLink> <NavLink to='/'> Pedidos </NavLink> </CabecalhoLink>
-          <CabecalhoLink> <NavLink to='/'> Vendas </NavLink> </CabecalhoLink>
-          <CabecalhoLink> <NavLink to='/'> Funcionários </NavLink> </CabecalhoLink>
-          <CabecalhoLink> <NavLink to='/'> Clientes </NavLink> </CabecalhoLink>
-          <CabecalhoLink> <NavLink to='/'> Agendas </NavLink> </CabecalhoLink>
-          <CabecalhoLink> <NavLink style={{color:'red'}} to='/login' onClick={() => auth.logout()}> Sair </NavLink> </CabecalhoLink>
+          <CabecalhoLink> <NavLink activeClassName="ativado" to='/pedidos'> Pedidos </NavLink> </CabecalhoLink>
+          <CabecalhoLink> <NavLink activeClassName="ativado" to='/vendas'> Vendas </NavLink> </CabecalhoLink>
+          <CabecalhoLink> <NavLink activeClassName="ativado" to='/funcionarios'> Funcionários </NavLink> </CabecalhoLink>
+          <CabecalhoLink> <NavLink activeClassName="ativado" to='/clientes'> Clientes </NavLink> </CabecalhoLink>
+          <CabecalhoLink> <NavLink activeClassName="ativado" to='/agendas'> Agendas </NavLink> </CabecalhoLink>
+          <CabecalhoLink> <NavLink style={{color:'red'}} to='/' onClick={() => auth.logout()}> Sair </NavLink> </CabecalhoLink>
         </CabecalhoLista>
       </nav>
     </CabecalhoContainer>

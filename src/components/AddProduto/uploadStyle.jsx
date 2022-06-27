@@ -112,7 +112,7 @@ export const ImagePreviewPequeno = styled.div`
         height: 130px;
         width: 100%;
         object-fit: cover;
-        border-radius: 20px;
+        border-radius: 10px;
     }
     .close-icon{
         background: #000;

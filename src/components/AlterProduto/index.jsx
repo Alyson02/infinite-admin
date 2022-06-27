@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Cartao, CartaoTitulo } from "../Cartao";
 import { Container } from "../Ui";
 import { Button, MenuItem, TextField, Typography } from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment"
+import InputAdornment from "@material-ui/core/InputAdornment";
 import {
   BoxUpload,
   BoxUploadPequeno,
@@ -12,13 +12,14 @@ import {
   ImagePreview,
   ImagePreviewPequeno,
   LabelInputUpload,
-} from "./uploadStyle";
+} from "../AddProduto/uploadStyle";
 import FolderIcon from "../../assets/images/folder.png";
 import FolderIconPequeno from "../../assets/images/folder-pequeno.png";
 import CloseIcon from "../../assets/images/CloseIcon.svg";
 import { useAuth } from "../../context/AuthProvider/useAuth";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { useAddProduto } from "../../context/AddProdutoProvider/useAddProduto";
+import { useDetalheProduto } from "../../context/DetalheProdutoProvider/useDetalheProduto";
 
 const Form = styled.form`
   display: flex;
@@ -42,22 +43,7 @@ const CartaoProd = styled(Cartao)`
   height: 80%;
 `;
 
-function FormProduto() {
-  const [titulo, setTitulo] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [preco, setPreco] = useState("");
-  const [quantidade, setQuantidade] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [image, setImage] = useState("");
-  const [foto1, setFoto1] = useState("");
-  const [foto2, setFoto2] = useState("");
-  const [foto3, setFoto3] = useState("");
-  const [foto4, setFoto4] = useState("");
-  const [isUploaded, setIsUploaded] = useState(false);
-  const [isUploadedFoto1, setIsUploadedFoto1] = useState(false);
-  const [isUploadedFoto2, setIsUploadedFoto2] = useState(false);
-  const [isUploadedFoto3, setIsUploadedFoto3] = useState(false);
-  const [isUploadedFoto4, setIsUploadedFoto4] = useState(false);
+function FormUpdateProduto() {
   const [typeFile, setTypeFile] = useState("");
   const [typeFileFoto1, setTypeFileFoto1] = useState("");
   const [typeFileFoto2, setTypeFileFoto2] = useState("");
@@ -68,9 +54,58 @@ function FormProduto() {
   const [foto2Base64, setFoto2Base64] = useState("");
   const [foto3Base64, setFoto3Base64] = useState("");
   const [foto4Base64, setFoto4Base64] = useState("");
+  const [fotos, setFotos] = useState([]);
 
   const addProduto = useAddProduto();
+  const detalheProduto = useDetalheProduto();
   const history = useHistory();
+  const { id } = useParams();
+
+  const [titulo, setTitulo] = useState(detalheProduto.produto.titulo);
+  const [categoria, setCategoria] = useState(detalheProduto.produto.categoria);
+  const [categoriaId, setCategoriaId] = useState(
+    detalheProduto.produto.categoriaId
+  );
+  const [preco, setPreco] = useState(detalheProduto.produto.preco);
+  const [quantidade, setQuantidade] = useState(detalheProduto.produto.estoque);
+  const [descricao, setDescricao] = useState(detalheProduto.produto.descricao);
+
+  const [image, setImage] = useState(detalheProduto.produto.urlCapa);
+  const [isUploaded, setIsUploaded] = useState(true);
+
+  const [foto1, setFoto1] = useState(detalheProduto.fotos[0]);
+  const [foto2, setFoto2] = useState(detalheProduto.fotos[1]);
+  const [foto3, setFoto3] = useState(detalheProduto.fotos[2]);
+  const [foto4, setFoto4] = useState(detalheProduto.fotos[3]);
+
+  const [isUploadedFoto1, setIsUploadedFoto1] = useState(true);
+  const [isUploadedFoto2, setIsUploadedFoto2] = useState(true);
+  const [isUploadedFoto3, setIsUploadedFoto3] = useState(true);
+  const [isUploadedFoto4, setIsUploadedFoto4] = useState(true);
+
+  console.log(categoriaId);
+
+  useEffect(
+    () => {
+      setCategoriaId(detalheProduto.produto.categoriaId);
+      setQuantidade(detalheProduto.produto.estoque);
+      setDescricao(detalheProduto.produto.descricao);
+      setFotos(detalheProduto.fotos);
+      setFoto1(fotos[0]);
+      setIsUploadedFoto1(true);
+      setFoto2(fotos[1]);
+      setIsUploadedFoto2(true);
+      setFoto3(fotos[2]);
+      setIsUploadedFoto3(true);
+      setFoto4(fotos[3]);
+      setIsUploadedFoto4(true);
+      console.log("AAAAAAAAAAAAA", detalheProduto);
+      setTitulo(detalheProduto.produto.titulo);
+      setCategoria(detalheProduto.produto.categoria);
+      setImage(detalheProduto.produto.urlCapa);
+      setPreco(detalheProduto.produto.preco);
+    },descricao
+  );
 
   function handleImageChange(ev, tipo) {
     if (ev.target.files && ev.target.files[0]) {
@@ -129,43 +164,44 @@ function FormProduto() {
   async function onFinish(e) {
     e.preventDefault();
     const Produto = {
+      id: id,
       nome: titulo,
       quantidade: quantidade,
       preco: preco,
-      categoria: categoria,
+      categoriaId: categoriaId,
       descricao: descricao,
       capa: {
         nome: "capa",
         base64: capaBase64,
-        Tipo: typeFile
+        Tipo: typeFile,
       },
       fotos: [
         {
           nome: "foto1",
           base64: foto1Base64,
-          Tipo: typeFileFoto1
+          Tipo: typeFileFoto1,
         },
         {
           nome: "foto2",
           base64: foto2Base64,
-          Tipo: typeFileFoto2
+          Tipo: typeFileFoto2,
         },
         {
           nome: "foto3",
           base64: foto3Base64,
-          Tipo: typeFileFoto3
+          Tipo: typeFileFoto3,
         },
         {
           nome: "foto4",
           base64: foto4Base64,
-          Tipo: typeFileFoto4
-        }
+          Tipo: typeFileFoto4,
+        },
       ],
-    }
+    };
     console.log(Produto);
-    const res = await addProduto.addProduto(Produto);
+    const res = await addProduto.updateProduto(Produto);
     console.log("EvioForm", res);
-    history.push('/produtos')
+    history.push("/produtos");
   }
 
   return (
@@ -176,15 +212,16 @@ function FormProduto() {
           <TextField
             onChange={(e) => setTitulo(e.target.value)}
             id="titulo"
-            label="Titulo"
+            value={titulo}
+            autoFocus={true}
             variant="standard"
             margin="normal"
           />
           <TextField
             select
             id="categoria"
-            defaultValue=""
-            label="Categoria"
+            displayEmpty
+            value={categoriaId || 3}
             variant="standard"
             onChange={(e) => setCategoria(e.target.value)}
             margin="normal"
@@ -203,8 +240,8 @@ function FormProduto() {
             minRows={4}
             maxRows={10}
             onChange={(e) => setDescricao(e.target.value)}
+            value={descricao}
             variant="outlined"
-            label="Descrição"
             margin="normal"
             fullWidth={false}
           />
@@ -497,13 +534,14 @@ function FormProduto() {
           </ContainerFotos>
           <TextField
             onChange={(e) => setPreco(e.target.value)}
+            value={preco}
+            InputLabelProps={{
+              focused: true,
+            }}
             id="preco"
-            label="Preço"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
-                  R$
-                </InputAdornment>
+                <InputAdornment position="start">R$</InputAdornment>
               ),
             }}
             variant="standard"
@@ -512,7 +550,7 @@ function FormProduto() {
           <TextField
             onChange={(e) => setQuantidade(e.target.value)}
             id="quantidade"
-            label="Quantidade"
+            value={quantidade}
             variant="standard"
             margin="normal"
           />
@@ -523,7 +561,7 @@ function FormProduto() {
               color="primary"
               variant="contained"
             >
-              CADASTRAR PRODUTO
+              ALTERAR PRODUTO
             </Button>
           </ContainerBtn>
         </Form>
@@ -532,4 +570,4 @@ function FormProduto() {
   );
 }
 
-export default FormProduto;
+export default FormUpdateProduto;

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { ContainerTabela, Tabela, Thead, Tr, Th, Td, BotoesControle } from ".";
-import { BotaoSimples } from "../../Ui";
-import { Api } from "../../../services/api";
-import style from "../../../assets/style.css";
+import { ContainerTabela, Tabela, Thead, Tr, Th, Td, BotoesControle } from "../Produtos/Tabela";
+import { BotaoSimples } from "../Ui";
+import { Api } from "../../services/api";
+import style from "../../assets/style.css";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import Toast from "../../Toast";
+import Toast from "../Toast";
 
-function TabelaProduto() {
-  const [produtos, setProdutos] = useState([]);
+function Funcionarios() {
+  const [funcionarios, setFunrionarios] = useState([]);
   const [isDel, setIsDel] = useState(false);
   const [open, setOpen] = useState(false);
 
   async function removeItem(id) {
     try {
-      const res = await Api.delete(`/produto/${id}`);
+      const res = await Api.delete(`/funcionario/${id}`);
       console.log(res);
       setIsDel(true);
     } catch (error) {
@@ -24,11 +24,11 @@ function TabelaProduto() {
 
   useEffect(() => {
     async function obterDados() {
-      const dados = await Api.get("/produto");
+      const dados = await Api.get("/funcionario");
 
       if (dados) {
-        setProdutos(dados.data.data);
-        console.log("Produtos", dados.data.data);
+        setFunrionarios(dados.data.data);
+        console.log("Funcionarios", dados.data.data);
       }
     }
     obterDados();
@@ -44,37 +44,37 @@ function TabelaProduto() {
       <Tabela>
         <Thead>
           <Tr>
-            <Th className="tabela__coluna--m">Titulo</Th>
-            <Th className="tabela__coluna--p">Categoria</Th>
-            <Th className="tabela__coluna--p">Preço</Th>
+            <Th className="tabela__coluna--m">Nome</Th>
+            <Th className="tabela__coluna--p">Email</Th>
+            <Th className="tabela__coluna--p">Telefone</Th>
             <Th className="tabela__coluna--m tabela__alinhamento--direita">
               <BotaoSimples
                 className="botao-simples--adicionar"
-                onClick={() => history.push("/addProduto")}
+                onClick={() => history.push("/addFuncionario")}
               >
-                Novo Produro
+                Novo Funcionario
               </BotaoSimples>
             </Th>
           </Tr>
         </Thead>
         <tbody>
-          {produtos.length > 0 &&
-            produtos.map((produto) => (
-              <Tr key={produto.produtoID}>
-                <Td className="td">{produto.nome}</Td>
-                <Td>{produto.categoria}</Td>
-                <Td>R$ {produto.preco}</Td>
+          {funcionarios.length > 0 &&
+            funcionarios.map((funcionario) => (
+              <Tr key={funcionario.funcionarioId}>
+                <Td className="td">{funcionario.nome}</Td>
+                <Td>{funcionario.email}</Td>
+                <Td>R$ {funcionario.telefone}</Td>
                 <Td>
                   <BotoesControle>
                     <BotaoSimples className="botao-simples--detalhes">
-                      <Link to={`/produto/${produto.produtoID}`}>Detalhes</Link>
+                      <Link to={`/funcionario/${funcionario.funcionarioId}`}>Detalhes</Link>
                     </BotaoSimples>
                     <BotaoSimples className="botao-simples--editar">
-                      <Link to={`/update-produto/${produto.produtoID}`}>Editar</Link>
+                      <Link to={`/update-funcionario/${funcionario.funcionarioId}`}>Editar</Link>
                     </BotaoSimples>
                     <BotaoSimples
                       className="botao-simples--excluir"
-                      onClick={() => removeItem(produto.produtoID)}
+                      onClick={() => removeItem(funcionario.funcionarioId)}
                     >
                       Excluir
                     </BotaoSimples>
@@ -88,4 +88,4 @@ function TabelaProduto() {
   );
 }
 
-export default TabelaProduto;
+export default Funcionarios;

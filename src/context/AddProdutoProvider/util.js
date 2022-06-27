@@ -9,15 +9,34 @@ export async function CreateProdutoRquest(produto) {
       pontos: 0,
       categoriaId: produto.categoria,
       descricao: produto.descricao,
-      capa: {
-        nome: produto.nomeCapa,
-        base64: produto.capaBase64,
-      },
+      capa: produto.capa,
       fotos: produto.fotos,
     });
-
+    console.log(res)
     return res;
   } catch (error) {
+    console.log(error)
+    return null;
+  }
+}
+
+export async function UpdateProdutoRquest(produto) {
+  try {
+    const res = await Api.put(`/produto/${produto.id}`, {
+      produtoId: produto.id,
+      nome: produto.nome,
+      estoque: produto.quantidade,
+      preco: produto.preco,
+      pontos: 0,
+      categoriaId: produto.categoria,
+      descricao: produto.descricao,
+      capa: produto.capa,
+      fotos: produto.fotos,
+    });
+    console.log(res)
+    return res;
+  } catch (error) {
+    console.log(error)
     return null;
   }
 }
