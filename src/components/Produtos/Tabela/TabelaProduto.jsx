@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { ContainerTabela, Tabela, Thead, Tr, Th, Td, BotoesControle } from ".";
-import { BotaoSimples } from "../../Ui";
+import { BotaoSimples, ImgLupa } from "../../Ui";
 import { Api } from "../../../services/api";
 import style from "../../../assets/style.css";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import Toast from "../../Toast";
+import { BarraPesquisa, Lupa, Texto } from "../../BarraPesquisa/BarraPesquisa";
+import { InputBase } from "@material-ui/core";
 
 function TabelaProduto() {
   const [produtos, setProdutos] = useState([]);
   const [isDel, setIsDel] = useState(false);
   const [open, setOpen] = useState(false);
+  const [pesquisa, setPesquisa] = useState("");
 
   async function removeItem(id) {
     try {
@@ -34,6 +37,11 @@ function TabelaProduto() {
     obterDados();
   }, [isDel]);
 
+  async function PesquisaProduto(nome){
+    const dados = await Api.get(`/produto?nome=${nome}`);
+    setProdutos(dados.data.data);
+  }
+
   const history = useHistory();
 
   return (
@@ -41,6 +49,18 @@ function TabelaProduto() {
       <Toast open={open} handleClose={() => setOpen(false)} severity={"error"}>
         Erro ao excluir produto
       </Toast>
+      <BarraPesquisa>
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search Google Maps"
+          inputProps={{ "aria-label": "search google maps" }}
+          fullWidth={true}
+          onChange={e => setPesquisa(e.target.value)}
+        />
+        <Lupa onClick={() => PesquisaProduto(pesquisa)}>
+          <path d={ImgLupa}></path>
+        </Lupa>
+      </BarraPesquisa>
       <Tabela>
         <Thead>
           <Tr>
@@ -70,7 +90,9 @@ function TabelaProduto() {
                       <Link to={`/produto/${produto.produtoID}`}>Detalhes</Link>
                     </BotaoSimples>
                     <BotaoSimples className="botao-simples--editar">
-                      <Link to={`/update-produto/${produto.produtoID}`}>Editar</Link>
+                      <Link to={`/update-produto/${produto.produtoID}`}>
+                        Editar
+                      </Link>
                     </BotaoSimples>
                     <BotaoSimples
                       className="botao-simples--excluir"

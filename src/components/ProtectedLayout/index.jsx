@@ -40,7 +40,7 @@ export const ProtectedLayout = ({ children }) => {
         <GlobalStyle />
         <Typography variant="h3">Você não tem permissão!</Typography>
         <Imagem src={close}></Imagem>
-        <Botao onClick={() => history.push('/login')}>Voltar ao login</Botao>
+        <Botao onClick={() => history.push('/')}>Voltar ao login</Botao>
       </ContainerError>
     );
   }

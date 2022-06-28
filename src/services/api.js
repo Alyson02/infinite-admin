@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { getUserLocalStorage } from '../context/AuthProvider/util';
+import moment from 'moment';
+import { getUserLocalStorage, setUserLocalStorage } from '../context/AuthProvider/util';
 
 export const Api = axios.create({
     //baseURL: "https://tccinfinite.azurewebsites.net/api/"
@@ -9,9 +10,8 @@ export const Api = axios.create({
 Api.interceptors.request.use(
     (config) => {
         const user = getUserLocalStorage();
-
         config.headers.Authorization = `Bearer ${user?.token}`;
-        console.debug("Serive - Api", `Bearer ${user?.token}`)
+        console.log("Service - Api", `Bearer ${user?.token}`)
 
         return config
     },
